@@ -1,0 +1,23 @@
+{
+  "name": "leongrdic/api-entity",
+  "type": "library",
+  "description": "A bridge between the API resource and an Entity class",
+  "keywords": ["api", "resource", "entity", "bridge", "module"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Leon",
+      "email": "leongrdic@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+	"leongrdic/api": ">=1.0",
+	"leongrdic/entity": ">=1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Le\\": "src/"
+    }
+  }
+}
