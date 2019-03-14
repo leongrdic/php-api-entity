@@ -40,7 +40,7 @@ abstract class EntityAPI {
 		if(strpos($id, ':') !== false){
 			$hash = explode(':', $id);
 			$id = $hash[0];
-			$hash = isset($hash[1]) ? $hash[1] : null;
+			$hash = $hash[1] ?? null;
 		}
 
 		// checking access level
@@ -61,8 +61,8 @@ abstract class EntityAPI {
 		$data = $res->get();
 		if(isset($meta['props']) && !empty($meta['props'])){
 			foreach($data as $column => $value){
-				$column_meta = isset($meta['props'][$column]) ? $meta['props'][$column] : [];
-				$column_access = isset($column_meta['read']) ? $column_meta['read'] : EntityAPI::ACCESS_PUBLIC;
+				$column_meta = $meta['props'][$column] ?? [];
+				$column_access = $column_meta['read'] ?? EntityAPI::ACCESS_PUBLIC;
 				if($access < $column_access) unset($data[$column]);
 			}
 		}
@@ -91,8 +91,8 @@ abstract class EntityAPI {
 
 		if(!isset($meta['props'])) $meta['props'] = [];
 		foreach($data as $column => $value){
-			$column_meta = isset($meta['props'][$column]) ? $meta['props'][$column] : [];
-			$column_access = isset($column_meta['write']) ? $column_meta['write'] : EntityAPI::ACCESS_PRIVATE;
+			$column_meta = $meta['props'][$column] ?? [];
+			$column_access = $column_meta['write'] ?? EntityAPI::ACCESS_PRIVATE;
 			if($access < $column_access) throw new APIException(API::HTTP_FORBIDDEN, 'access denied for writing the field \'' . $column . '\'');
 
 			API::filter($value, $meta['props'][$column], "prop '" . $column . "'");
