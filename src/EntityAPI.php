@@ -10,6 +10,23 @@ abstract class EntityAPI {
 
 	const LIST_PER_PAGE = 10;
 
+	public static function fetch($params, $entities){
+		$list = [];
+		foreach($entities as $entity){
+			$msg = $entity[0] . ' not found'; $ref = $entity[1] .'_'. $entity[2];
+
+			$id = $params[$entity[1]][$entity[2]] ?? '';
+			if(empty($id)) throw new APIException(API::HTTP_NOT_FOUND, $msg, $ref);
+
+			try{ $object = $entity[0]::load($id); }
+			catch(EntityNotFoundException $e){ throw new APIException(API::HTTP_NOT_FOUND, $msg, $ref); }
+
+			array_push($list, $object);
+		}
+
+		return $list;
+	}
+
 	public static function entity_access($id){
 		return EntityAPI::ACCESS_PUBLIC;
 	}
