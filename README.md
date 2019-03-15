@@ -133,6 +133,51 @@ If entity doesn't exist or access level was `DENY`:
 HTTP 404 NOT FOUND
 ```
 
+### `fetch($params, $entities)`
+This is a static method not accessible through the API and it allows you to easily fetch entities from your API action methods that were referenced by their IDs in `$params`.
+
+#### Parameters
+`$params` should be passed from the API action method
+
+`$entities` is an array containing a list of entitiy classes and instructions where the ID can be found:
+```php
+[
+  [User::class, 'path', 0], // the User entity ID should be in $params['path'][0]
+  [Session::class, 'data', 'session'], // the Session entity ID should be in $params['data']['session']
+  ...
+]
+```
+
+#### Return
+If an entity ID isn't provided in $params or a wrong one is provided, the function will throw an `APIException`:
+```
+HTTP 404 NOT FOUND
+{
+  "message": "User not found",
+  "code": "path_0"
+}
+```
+
+If all entities are found and loaded successfully, the method will return an array containing those entity objects in the same order as passed in the `$entities` parameter:
+```php
+[
+  User object,
+  Session object,
+  ...
+]
+```
+
+#### Example usage
+```php
+  list($user, $session) = \Le\EntityAPI::fetch($params, [
+    [User::class, 'query', 'user'],
+    [Session::class, 'data', 'session']
+  ]);
+
+  $user->...
+  $session->...
+```
+
 ### `list($conditions, $additional, $page_number, $per_page)`
 This is a static method not accessible through the API, so it has to be implemented in one of your own API action methods. Use the documentation below for help.
 
