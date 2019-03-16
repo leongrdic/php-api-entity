@@ -125,13 +125,12 @@ abstract class EntityAPI {
 		$per_page = $per_page !== false ? $per_page : ($meta['list_per_page'] ?? EntityAPI::LIST_PER_PAGE);
 		$offset = $per_page * $page;
 
-		$result_count = $meta['class']::find($conditions, ['single' => true, 'columns' => 'COUNT(id)']);
-		$result = $meta['class']::find(
+		$result = [];
+		$result['page_count'] = ceil($meta['class']::count($conditions)/$per_page);
+		$result['data'] = $meta['class']::find(
 			$conditions,
 			array_merge($additional, ['limit' => $per_page, 'offset' => $offset])
-		);
-
-		$result['page_count'] = ceil($result_count['data']['COUNT(id)']/$per_page);
+		)->array();
 		return $result;
 	}
 

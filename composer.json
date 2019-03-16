@@ -13,7 +13,7 @@
   "require": {
     "php": ">=7.0",
     "leongrdic/api": "^1.0",
-    "leongrdic/entity": "^1.0"
+    "leongrdic/entity": "^2.0"
   },
   "autoload": {
     "psr-4": {
