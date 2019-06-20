@@ -191,6 +191,8 @@ This is a static method not accessible through the API, so it has to be implemen
 #### Return
 ```php
 [
+  'total' = 24,
+  'per_page' => 10,
   'page_count' => 3,
   'data' => [
     [

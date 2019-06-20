@@ -126,7 +126,9 @@ abstract class EntityAPI {
 		$offset = $per_page * $page;
 
 		$result = [];
-		$result['page_count'] = ceil($meta['class']::count($conditions)/$per_page);
+		$result['total'] = $meta['class']::count($conditions);
+		$result['per_page'] = $per_page;
+		$result['page_count'] = ceil($result['total']/$per_page);
 		$result['data'] = $meta['class']::find(
 			$conditions,
 			array_merge($additional, ['limit' => $per_page, 'offset' => $offset])
